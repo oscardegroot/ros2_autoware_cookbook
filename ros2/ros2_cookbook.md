@@ -25,10 +25,19 @@ publisher_ = node->create_publisher<std_msgs::msg::String>(<topic_name>, 1);
 ### Topic - Subscriber
 Example subscriber declaration for the case that the callback function is a member function (`StateCallback` inside a class `JackalSimulatorInterface` in this case):
 
-```
+```cpp
 node->create_subscription<std_msgs::msg::String>(
       <topic_name>, 1,
       std::bind(&JackalSimulatorInterface::StateCallBack, this, std::placeholders::_1));
+```
+
+**Note:** If you do not know the order in which nodes will start-up and you need to catch a message on start-up, use `transient_local` quality-of-service. For example:
+
+```cpp
+auto qos_transient_local = rclcpp::QoS{1}.transient_local();
+
+vector_map_subscriber_ = roadmap->create_subscription<HADMapBin>(
+    "~/input/vector_map", qos_transient_local, std::bind(&AutowareLaneletConverter::onMap, this, _1));
 ```
 
 ---
@@ -114,6 +123,9 @@ For general time (from ROS1):
 `ros::Time::now → rclcpp::Clock()::now()`
 
 Nodes also have a clock via `node->now()`. Mixing timers from different sources can lead to errors.
+
+### Compiling
+You can compile a selection of packages using the flag `--packages-up-to roadmap`.
 
 ---
 ### Notes
