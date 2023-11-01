@@ -2,6 +2,19 @@
 Below are some pointers that I took while migrating from ROS1 to ROS2.
 
 ---
+### Useful probing commands
+
+- List all topics: `ros2 topic list`
+
+- List all topics with a string: `ros2 topic list | grep -i <string>`
+
+- Get info on a topic: `ros2 topic info <topic> -v`
+
+- List all nodes: `ros2 node list`
+
+- Get info on a node (what topics it has): `ros2 node info <node>`
+
+---
 ### Nodes
 Every ROS2 node should extend `rclcpp::Node`. Some notes:
 
